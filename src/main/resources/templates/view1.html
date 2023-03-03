@@ -11,12 +11,12 @@
 		-->
 
 		<h1>Shopping Cart</h1>
-
+		<form method="POST" action="/submit" data-th-object="${cart}">
 		<table>
 			<tr>
 				<td>Item:</td>
 				<td>
-					<select name="item">
+					<select name="item" data-th-field="*{item}">
 						<option value="apple">Apple</option>
 						<option value="orange">Orange</option>
 						<option value="bread">Bread</option>
@@ -25,12 +25,18 @@
 						<option value="mineral_water">Mineral Water</option>
 						<option value="instant_noodles">Instant Noodles</option>
 					</select>
+					<div data-th-if="${#fields.hasErrors('item')}">
+						<span data-th-errors="*{item}" data-th-errorclass="error"></span>
+					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>Quantity:</td>
 				<td>
-					<input type="number" name="quantity" size="4" placeholder="Quantity">
+					<input type="number" name="quantity" size="4" placeholder="Quantity" data-th-field="*{quantity}">
+					<div data-th-if="${#fields.hasErrors('quantity')}">
+						<span data-th-errors="*{quantity}" data-th-errorclass="error"></span>
+					</div>
 				</td>
 			</tr>
 		</table>
@@ -43,17 +49,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Apple</td>
-					<td>3</td>
+				<tr data-th-each = "eachItem: ${cartItems}">
+					<td data-th-text = "${eachItem.item}"></td>
+					<td data-th-text = "${eachItem.quantity}"></td>
 				</tr>
 			</tbody>
 		</table>
 
 		<div>
-			<button type="button">Add</button>
-			<button type="button">Next</button>
+			<button type="submit">Add</button>
+			<button type="submit" formmethod="get" formaction="/shippingaddress">Next</button>
 		</div>
-		
+	</form>
 	</body>
 </html>
